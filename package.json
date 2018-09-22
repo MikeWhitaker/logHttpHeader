@@ -1,0 +1,21 @@
+{
+  "name": "apiwithfaker",
+  "version": "0.0.1",
+  "description": "A simple program to exeriment with q promises library",
+  "main": "qExample.js",
+  "dependencies": {
+    "q": "^1.5.1",
+    "underscore": "^1.9.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.npm0.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "load-grunt-tasks": "^4.0.0"
+  },
+  "scripts": {
+    "test": "test",
+    "start": "node qExample.js"
+  },
+  "author": "m. whitaker",
+  "license": "ISC"
+}
