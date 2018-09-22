@@ -1,0 +1,35 @@
+[
+    {
+        "label": "google",
+        "address": "http://www.google.nl"
+    },
+    {
+        "label": "microsoft",
+        "address": "http://www.microsoft.nl"
+    },
+    {
+        "label": "nu",
+        "address": "http://www.nu.nl"
+    },
+    {
+        "label": "facebook",
+        "address": "http://www.facebook.com"
+    },
+    {
+        "label": "twitter",
+        "address": "http://www.twitter.com"
+    },
+    {
+        "label": "reddit.com",
+        "address": "http://www.reddit.com"
+    },
+    {
+        "label": "youtube",
+        "address": "http://www.youtube.com"
+    },
+    {
+        "label": "www.ing.nl",
+        "address": "http://www.ing.nl"
+    }
+
+]
