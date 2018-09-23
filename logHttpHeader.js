@@ -1,21 +1,15 @@
 "use strict";
 
-var controller = (function() {
+var logHeader = (function() {
   var http = require("http"),
     httpHeaders = require("http-headers"),
     q = require("q"),
     _ = require("underscore"),
     promiseList = [],
     targets = require("./targetObjects.json");
-
-  /*   
-       var stubFunction = function() {
-       var deferred = q.defer();
-    
-       deferred.resolve();
-       return deferred.promise;
-       };
-  */
+    var resultList = [];
+    var complete = false;
+    var callBack = function(){};
 
   var getHeader = function(targetObj) {
     promiseList.push(this);
@@ -36,20 +30,32 @@ var controller = (function() {
         });
         resp.on("end", function() {
           resp.headers.label = targetObj.label;
-          console.log(JSON.stringify(resp.headers));
+          let result = JSON.stringify(resp.headers)
+          resultList.push(result);
+          console.log(result);
           deferred.resolve();
         });
       })
       .on("error", e => {
-        console.error("ERROR:" + e.message);
+        let result = JSON.stringify("ERROR:" + e.message);
+        resultList.push(result);
+        console.error(result);
         deferred.resolve();
       });
 
     return deferred.promise;
   };
 
+  var getResultList = function () {
+    return resultList;
+  };
+
+
+
   var execAsyncCalls = function() {
     //What would happen if the functions register them selfs to a call back?
+
+    complete = false;
 
     _(targets).each(s => {
       promiseList.push(getHeader(s));
@@ -60,13 +66,47 @@ var controller = (function() {
         console.log(e.message);
     })
     .done(function() {
+      complete = true;
       console.log("All the calls have been executed");
+      callBack();
     });
   };
 
+  var isComplete = function () {
+    return complete;
+  };
+
+  var setCallBack = function (cb) {
+    callBack = cb;
+  };
+
   return {
-    execAsyncCalls: execAsyncCalls
+    execAsyncCalls: execAsyncCalls,
+    getResultList: getResultList,
+    isComplete: isComplete,
+    setCallBack : setCallBack
   };
 })();
 
-controller.execAsyncCalls();
+var fileWriter = (function(){
+  var fs = require('fs');
+
+  var exec = function(data){
+    fs.writeFile('output.json', 'utf8', function(e){
+      if(err){
+        console.error(e);
+      }
+    });
+
+  };
+
+
+  return {
+    exec: exec
+  }
+
+}());
+
+logHeader.setCallBack(fileWriter.exec)
+logHeader.execAsyncCalls();
+
