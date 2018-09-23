@@ -30,14 +30,17 @@ var logHeader = (function() {
         });
         resp.on("end", function() {
           resp.headers.label = targetObj.label;
-          let result = JSON.stringify(resp.headers)
+          // let result = JSON.stringify(resp.headers)
+          let result = resp.headers;
+
           resultList.push(result);
           console.log(result);
           deferred.resolve();
         });
       })
       .on("error", e => {
-        let result = JSON.stringify("ERROR:" + e.message);
+        // let result = JSON.stringify("ERROR:" + e.message);
+        let result = "ERROR:" + e.message;
         resultList.push(result);
         console.error(result);
         deferred.resolve();
@@ -68,7 +71,7 @@ var logHeader = (function() {
     .done(function() {
       complete = true;
       console.log("All the calls have been executed");
-      callBack();
+      callBack(resultList);
     });
   };
 
@@ -92,8 +95,9 @@ var fileWriter = (function(){
   var fs = require('fs');
 
   var exec = function(data){
-    fs.writeFile('output.json', 'utf8', function(e){
-      if(err){
+    let json = JSON.stringify(data);
+    fs.writeFile('output.json', json, 'utf8', function(e){
+      if(e){
         console.error(e);
       }
     });
